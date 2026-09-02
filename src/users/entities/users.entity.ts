@@ -1,7 +1,10 @@
+import { Answer } from 'src/questions/entities/answers.entity';
+import { Question } from 'src/questions/entities/questions.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -21,4 +24,10 @@ export class User {
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
+
+  @OneToMany(() => Question, (question) => question.owner)
+  questions: Question[];
+
+  @OneToMany(() => Answer, (answer) => answer.owner)
+  answers: Answer[];
 }

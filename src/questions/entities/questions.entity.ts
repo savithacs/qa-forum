@@ -5,8 +5,10 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Answer } from './answers.entity';
 
 @Entity('questions')
 export class Question {
@@ -21,10 +23,16 @@ export class Question {
 
   @Column({ type: 'uuid' })
   ownerId: string;
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => User, (user) => user.questions, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'ownerId' })
   owner: User;
 
   @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
+
+  @OneToMany(() => Answer, (answer) => answer.question)
+  answers: Answer[];
 }

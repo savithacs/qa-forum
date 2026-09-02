@@ -19,13 +19,19 @@ export class Answer {
 
   @Column({ type: 'uuid' })
   questionId: string;
-  @ManyToOne(() => Question, { nullable: false })
+  @ManyToOne(() => Question, (question) => question.answers, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'questionId' })
   question: Question;
 
   @Column({ type: 'uuid' })
   ownerId: string;
-  @ManyToOne(() => User, { nullable: false })
+  @ManyToOne(() => User, (user) => user.answers, {
+    nullable: false,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'ownerId' })
   owner: User;
 
